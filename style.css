@@ -1,0 +1,688 @@
+/* ==================== */
+/* 1. Root Variables    */
+/* ==================== */
+:root {
+    /* Light Mode Variables */
+    --primary-color: #007bff; /* Blue */
+    --secondary-color: #6c757d; /* Gray */
+    --accent-color: #17a2b8; /* Cyan */
+    --success-color: #28a745; /* Green */
+    --danger-color: #dc3545; /* Red */
+    --warning-color: #ffc107; /* Yellow */
+    --info-color: #6200EE; /* Purple-ish */
+
+    --bg-color: #f8f9fa; /* Light background */
+    --text-color: #212529; /* Dark text */
+    --card-bg: #ffffff; /* White card background */
+    --border-color: #e9ecef; /* Light border */
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    --button-text-light: #ffffff;
+    --button-text-dark: #212529;
+
+    --border-radius: 8px;
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+}
+
+/* Dark Mode Variables */
+[data-theme='dark'] {
+    --primary-color: #64B5F6; /* Lighter Blue */
+    --secondary-color: #90A4AE; /* Lighter Gray */
+    --accent-color: #4DD0E1; /* Lighter Cyan */
+    --success-color: #81C784; /* Lighter Green */
+    --danger-color: #E57373; /* Lighter Red */
+    --warning-color: #FFD54F; /* Lighter Yellow */
+    --info-color: #9575CD; /* Lighter Purple-ish */
+
+    --bg-color: #2c2c2c; /* Dark background */
+    --text-color: #e0e0e0; /* Light text */
+    --card-bg: #3a3a3a; /* Dark card background */
+    --border-color: #4a4a4a; /* Dark border */
+    --shadow-color: rgba(0, 0, 0, 0.3);
+
+    --button-text-light: #212121;
+    --button-text-dark: #e0e0e0;
+}
+
+/* ==================== */
+/* 2. Global Styles     */
+/* ==================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: var(--spacing-xl);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align to top */
+    min-height: 100vh;
+    box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+.app-container {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-color) 0px 8px 24px;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-height: calc(100vh - (2 * var(--spacing-xl))); /* Adjust for body padding */
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: var(--primary-color);
+    color: var(--button-text-light);
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.header-info h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.header-info #playerIdentifier {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.header-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.app-main {
+    padding: var(--spacing-lg);
+    flex-grow: 1; /* Allows main content to take available space */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+button:hover {
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Input Group Styles */
+.input-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.input-group input[type="email"],
+.input-group input[type="password"],
+.input-group input[type="text"],
+.input-group select {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    box-sizing: border-box; /* Ensure padding doesn't add to total width */
+    font-size: 1rem;
+}
+
+/* ==================== */
+/* 3. Section Specific  */
+/* ==================== */
+
+/* Auth Section */
+.auth-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px; /* Give it some height */
+    padding: var(--spacing-lg);
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-color) 0px 4px 12px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-md);
+}
+
+/* Game Section */
+.game-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    flex-grow: 1; /* Take remaining space */
+}
+
+.balance-card {
+    background-color: var(--accent-color);
+    color: var(--button-text-light);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: var(--shadow-color) 0px 2px 8px;
+}
+
+.balance-card h3 {
+    color: var(--button-text-light);
+    margin-bottom: var(--spacing-sm);
+}
+
+.balance-card p {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.action-button {
+    padding: var(--spacing-lg);
+    font-size: 1.1rem;
+    font-weight: bold;
+    height: 100px; /* Fixed height for consistent look */
+}
+
+.player-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+}
+
+.player-card {
+    background-color: var(--card-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-color) 0px 2px 8px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+}
+
+.player-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--text-color); /* Use text-color for player names */
+}
+
+.player-card p {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.game-controls {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-top: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+/* History Section Styles */
+.history-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-color) 0px 4px 12px;
+    height: 100%; /* Take full height */
+    overflow-y: auto; /* Allow scrolling for long history */
+    box-sizing: border-box; /* Include padding in height */
+}
+
+.history-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.history-section .section-header h2 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.transaction-history {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.transaction-history div {
+    background-color: var(--bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+    word-wrap: break-word; /* Ensure long text wraps */
+}
+
+.transaction-history .no-transactions-message {
+    text-align: center;
+    color: var(--secondary-color);
+    font-style: italic;
+    padding: var(--spacing-lg);
+}
+
+/* ==================== */
+/* 4. Modals            */
+/* ==================== */
+.modal {
+    display: none; /* <-- เปลี่ยนกลับเป็น 'none' เหมือนเดิม */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    /* ยังคงให้เป็น flexbox สำหรับการจัดกึ่งกลางเมื่อแสดงผล */
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-md);
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: auto;
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-color) 0px 8px 24px;
+    width: 90%; /* Responsive width */
+    max-width: 500px; /* Max width for larger screens */
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
+    box-sizing: border-box;
+    display: flex; /* Ensure content inside modal is a flex container */
+    flex-direction: column; /* Stack elements vertically */
+    gap: var(--spacing-md); /* Add consistent spacing between elements */
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-sm); /* Adjusted margin for better flow */
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 1.8rem; /* Make heading more prominent */
+}
+
+.close-button {
+    color: var(--secondary-color);
+    font-size: 2rem;
+    font-weight: bold;
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-md);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: var(--danger-color);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Specific styles for bank and transfer modal actions */
+.bank-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md); /* Spacing between input groups */
+}
+
+.bank-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm); /* Adjusted margin */
+    flex-wrap: wrap; /* Allow buttons to wrap */
+    justify-content: center;
+}
+
+.bank-buttons button {
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    min-width: 150px; /* Ensure buttons don't get too small */
+}
+
+/* Specific styling for the confirm transfer button */
+#confirmTransferBtn {
+    margin-top: var(--spacing-sm); /* Add some space above the button */
+    width: 100%; /* Make button full width */
+}
+
+
+/* ==================== */
+/* 5. Button Styles     */
+/* ==================== */
+.primary-button {
+    background-color: var(--primary-color);
+    color: var(--button-text-light);
+}
+.primary-button:hover {
+    background-color: #0056b3;
+}
+
+.secondary-button {
+    background-color: var(--secondary-color);
+    color: var(--button-text-light);
+}
+.secondary-button:hover {
+    background-color: #5a6268;
+}
+
+.accent-button {
+    background-color: var(--accent-color);
+    color: var(--button-text-light);
+}
+.accent-button:hover {
+    background-color: #138496;
+}
+
+.success-button {
+    background-color: var(--success-color);
+    color: var(--button-text-light);
+}
+.success-button:hover {
+    background-color: #218838;
+}
+
+.warning-button {
+    background-color: var(--warning-color);
+    color: var(--button-text-dark);
+}
+.warning-button:hover {
+    background-color: #e0a800;
+}
+
+.danger-button {
+    background-color: var(--danger-color);
+    color: var(--button-text-light);
+}
+.danger-button:hover {
+    background-color: #c82333;
+}
+
+.info-button {
+    background-color: var(--info-color);
+    color: var(--button-text-light);
+}
+.info-button:hover {
+    background-color: #4b00c2;
+}
+
+/* Theme Toggle Button specific style */
+#themeToggleBtn, #logoutBtn {
+    background: none;
+    border: none;
+    color: var(--button-text-light);
+    padding: var(--spacing-xs);
+    font-size: 1.5rem;
+    transition: color 0.2s ease, transform 0.1s ease;
+}
+
+#themeToggleBtn:hover, #logoutBtn:hover {
+    color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.05);
+}
+
+
+/* ==================== */
+/* 6. Animations        */
+/* ==================== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+
+/* ==================== */
+/* 7. Responsive Adjustments */
+/* ==================== */
+
+/* Tablet and smaller desktops */
+@media (max-width: 768px) {
+    body {
+        padding: var(--spacing-md);
+        align-items: stretch; /* Stretch to fill width */
+    }
+
+    .app-container {
+        border-radius: 0; /* Remove border-radius */
+        box-shadow: none; /* Remove shadow */
+        min-height: 100vh; /* Fill entire viewport height */
+    }
+
+    .app-header {
+        padding: var(--spacing-md);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .header-info h1 {
+        font-size: 1.5rem;
+    }
+
+    .app-main {
+        padding: var(--spacing-md);
+        gap: var(--spacing-md);
+    }
+
+    .balance-card p {
+        font-size: 2rem; /* Smaller font for balance */
+    }
+
+    .actions-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Allow smaller buttons */
+        gap: var(--spacing-sm);
+    }
+
+    .action-button {
+        padding: var(--spacing-md);
+        font-size: 1rem;
+        height: 80px; /* Slightly smaller button height */
+    }
+
+    .player-list-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* More columns for players */
+        gap: var(--spacing-sm);
+    }
+
+    .player-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .player-card p {
+        font-size: 0.9rem;
+    }
+
+    .game-controls {
+        flex-direction: column; /* Stack reset/undo buttons */
+    }
+
+    .auth-card {
+        padding: var(--spacing-md);
+        max-width: 100%;
+    }
+
+    .modal-content {
+        width: 95%; /* Wider modal on smaller screens */
+        padding: var(--spacing-md);
+        gap: var(--spacing-sm); /* Smaller gap for elements within modal */
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .bank-buttons {
+        flex-direction: column; /* Stack bank control buttons */
+    }
+
+    .bank-buttons button {
+        min-width: unset; /* Remove min-width for stacking */
+        width: 100%; /* Make them full width when stacked */
+    }
+
+    #confirmTransferBtn {
+        width: 100%; /* Make button full width */
+    }
+
+    .history-section {
+        padding: var(--spacing-md);
+    }
+
+    .history-section .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .transaction-history div {
+        padding: var(--spacing-sm);
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+    body {
+        padding: 0; /* No padding on smallest screens */
+    }
+
+    .app-main {
+        padding: var(--spacing-sm); /* Smaller main padding */
+    }
+
+    .header-info h1 {
+        font-size: 1.3rem;
+    }
+
+    .balance-card p {
+        font-size: 1.8rem;
+    }
+
+    .actions-grid {
+        grid-template-columns: 1fr; /* Single column for action buttons */
+    }
+
+    .action-button {
+        height: 70px;
+        font-size: 0.95rem;
+    }
+
+    .player-list-grid {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* Slightly smaller player cards */
+    }
+
+    .player-card {
+        padding: var(--spacing-sm);
+    }
+
+    .player-card h3 {
+        font-size: 1rem;
+    }
+
+    .player-card p {
+        font-size: 0.85rem;
+    }
+
+    .auth-buttons {
+        flex-direction: column; /* Stack auth buttons */
+    }
+
+    .modal-content {
+        padding: var(--spacing-sm); /* Smaller modal padding */
+    }
+
+    .close-button {
+        font-size: 1.8rem;
+        top: var(--spacing-xs);
+        right: var(--spacing-sm);
+    }
+
+    .input-group label {
+        font-size: 0.9rem;
+    }
+
+    .input-group input, .input-group select {
+        padding: var(--spacing-xs) var(--spacing-sm);
+        font-size: 0.9rem;
+    }
+
+    button {
+        font-size: 0.95rem;
+        padding: var(--spacing-sm);
+    }
+}

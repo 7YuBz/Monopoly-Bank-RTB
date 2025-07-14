@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monopoly Bank by.RTB</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-info">
+                <h1>Monopoly Bank by.RTB</h1>
+                <span id="playerIdentifier" style="display: none;">หน่อง: <span id="playerId"></span></span>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggleBtn" title="สลับโหมดธีม"><i class="material-icons">brightness_4</i></button>
+                <button id="logoutBtn" style="display: none;" title="ออกจากระบบ"><i class="material-icons">logout</i></button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <section id="authSection" class="auth-section">
+                <div class="auth-card">
+                    <h2>เข้าสู่ระบบ / ลงทะเบียน</h2>
+                    <div class="input-group">
+                        <label for="emailInput">อีเมล</label>
+                        <input type="email" id="emailInput" placeholder="กรอกอีเมลของคุณ" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="passwordInput">รหัสผ่าน</label>
+                        <input type="password" id="passwordInput" placeholder="กรอกรหัสผ่านของคุณ" required>
+                    </div>
+                    <div class="auth-buttons">
+                        <button id="loginBtn" class="primary-button">เข้าสู่ระบบ</button>
+                        <button id="registerBtn" class="secondary-button">ลงทะเบียน</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gameSection" class="game-section" style="display: none;">
+                <div class="balance-card">
+                    <h3>ยอดคงเหลือของคุณ</h3>
+                    <p id="currentBalance">฿0</p>
+                </div>
+
+                <div class="actions-grid">
+                    <button id="transferBtn" class="action-button primary-button"><i class="material-icons">send</i> โอนเงิน</button>
+                    <button id="bankControlBtn" class="action-button accent-button"><i class="material-icons">account_balance</i> ธนาคาร</button>
+                    <button id="historyBtn" class="action-button info-button"><i class="material-icons">history</i> ประวัติ</button>
+                    <button id="chanceCardBtn" class="action-button secondary-button"><i class="material-icons">casino</i> การ์ดโอกาส</button>
+                </div>
+
+                <h2>ผู้เล่นคนอื่นๆ</h2>
+                <div id="playerList" class="player-list-grid">
+                    </div>
+
+                <div class="game-controls">
+                    <button id="undoBtn" class="danger-button"><i class="material-icons">undo</i> ย้อนกลับล่าสุด</button>
+                    <button id="resetGameBtn" class="warning-button"><i class="material-icons">restart_alt</i> รีเซ็ตเกม</button>
+                </div>
+            </section>
+
+            <section id="historySection" class="history-section" style="display: none;">
+                <div class="section-header">
+                    <h2>ประวัติการทำรายการ</h2>
+                    <button id="backToGameBtn" class="secondary-button"><i class="material-icons">arrow_back</i> ย้อนกลับ</button>
+                </div>
+                <div id="transactionHistory" class="transaction-history">
+                    <p class="no-transactions-message">ยังไม่มีการทำรายการ</p>
+                    </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="transferModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal="transferModal">&times;</span>
+            <h2>โอนเงิน</h2>
+            <div class="input-group">
+                <label for="fromPlayerSelect">ผู้โอน</label>
+                <select id="fromPlayerSelect" required disabled></select> </div>
+            <div class="input-group">
+                <label for="toPlayerSelect">ผู้รับ</label>
+                <select id="toPlayerSelect" required></select>
+            </div>
+            <div class="input-group">
+                <label for="transferAmount">จำนวนเงิน</label>
+                <input type="text" id="transferAmount" placeholder="เช่น 100000 หรือ 100K" required>
+            </div>
+            <button id="confirmTransferBtn" class="primary-button">ยืนยันการโอน</button>
+        </div>
+    </div>
+
+    <div id="bankControlModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" data-modal="bankControlModal">&times;</span>
+            <h2>ธนาคาร</h2>
+            <div class="bank-actions">
+                <div class="input-group">
+                    <label for="bankPlayerSelect">เลือกผู้เล่น</label>
+                    <select id="bankPlayerSelect" required></select>
+                </div>
+                <div class="input-group">
+                    <label for="bankAmount">จำนวนเงิน</label>
+                    <input type="text" id="bankAmount" placeholder="เช่น 100000 หรือ 100K" required>
+                </div>
+                <div class="bank-buttons">
+                    <button id="bankToPlayerBtn" class="success-button"><i class="material-icons">add</i> ธนาคารจ่ายให้ผู้เล่น</button>
+                    <button id="playerToBankBtn" class="warning-button"><i class="material-icons">remove</i> ผู้เล่นจ่ายให้ธนาคาร</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
